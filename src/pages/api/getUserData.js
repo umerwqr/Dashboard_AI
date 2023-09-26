@@ -1,5 +1,5 @@
 // pages/api/getUserData.js
-import firebase from './firebase';
+import firebase from '../../config/firebase';
 
 export default async function handler(req, res) {
   const { uid } = req.query; // UID of the user you want to fetch data for
