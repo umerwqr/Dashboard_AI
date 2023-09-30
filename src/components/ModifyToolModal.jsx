@@ -69,6 +69,7 @@ const ModifyToolModal = ({ visible, onCancel, data }) => {
         <Form.Item name="mode" label="Mode">
           <Select >
             <Option value="Trending">Trending</Option>
+            <Option value="Featured">Featured</Option>
             <Option value="Alternate">Alternate</Option>
           </Select>
         </Form.Item>
