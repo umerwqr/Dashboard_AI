@@ -238,34 +238,13 @@ const Index = () => {
   const columns = [
     {
       title: (
-        <Checkbox
-          onChange={(e) => {
-            if (e.target.checked) {
-              setSelectedRowKeys(users.map((item) => item.uid));
-            } else {
-              setSelectedRowKeys([]);
-            }
-          }}
-        />
+        <div className="text-[16px] text-[#777777] font-[500] fontItems">
+          #
+        </div>
       ),
-      key: "checkbox",
-      render: (_, record) => (
-        <Checkbox
-          checked={selectedRowKeys.includes(record.id)}
-          onChange={(e) => {
-            const selectedKeys = [...selectedRowKeys];
-            if (e.target.checked) {
-              selectedKeys.push(record.id);
-            } else {
-              const index = selectedKeys.indexOf(record.id);
-              if (index !== -1) {
-                selectedKeys.splice(index, 1);
-              }
-            }
-            setSelectedRowKeys(selectedKeys);
-          }}
-        />
-      ),
+      dataIndex: "id",
+      key: "id",
+      render: (text, record, index) => index + 1
     },
 
     {

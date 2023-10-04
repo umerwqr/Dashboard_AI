@@ -126,13 +126,13 @@ const navItemMenu = (
     <div className="w-full  ">
             <h1 className="font-[700] sm:text-[24px] text-[20px] fontItems"> { getPageTitle(router.pathname)}</h1>
           </div>
-          <div className=" responsive-input px-4 w-full  ">
+          {/* <div className=" responsive-input px-4 w-full  ">
           <Input
             placeholder="Search by cateogry"
             className="border input-search fontNew rounded-full    px-4 py-2  sm:mx-auto text-sm md:text-base focus:outline-none focus:border-blue-500  " style={{background: "#EAF0FF42", borderColor: "#07174F0A", }}
             suffix={<SearchOutlined style={{ color: "#777777", borderColor: "#07174F0A", background: "transparent" }} />}
           />
-          </div>
+          </div> */}
         
         </div>
 
@@ -143,11 +143,11 @@ const navItemMenu = (
  
    
           {/* Bell Icon with Notification Count */}
-          <div className="relative mr-4" >
+          {/* <div className="relative mr-4" >
             <BellOutlined style={{ fontSize: "24px", color: "rgba(0, 0, 0, 0.65)", }} />
             <span className="notification-circle">{" "}</span>
 
-          </div>
+          </div> */}
 
          
 

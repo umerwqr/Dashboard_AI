@@ -6,6 +6,8 @@ import { Select, Menu, Dropdown, Button, Table, Card, Modal, Checkbox, Paginatio
 import { useState, useEffect } from "react";
 import { message } from 'antd';
 import moment from 'moment';
+import { db } from "@/config/firebase";
+import { getDocs,collection } from "firebase/firestore";
 import ModifyReviewModal from '../../components/ModifyReviewModal'
 const Index = () => {
 
@@ -13,7 +15,36 @@ const Index = () => {
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [selectedTool, setSelectedTool] = useState(null);
-  
+
+
+    const [reviewArray, setReviewArray] = useState([]); // Use state to store savesArray
+
+    useEffect(() => {
+      const getToolSaves = async () => {
+        try {
+          const querySnapshot = await getDocs(
+            collection(db, 'reviews')
+         );
+
+          const newArray = [];
+
+          querySnapshot.forEach((doc) => {
+            newArray.push({ id: doc.id, ...doc.data() });
+          });
+
+          setReviewArray(newArray);
+        } catch (error) {
+          console.error("Error fetching tool Reviews:", error);
+        }
+      }
+
+
+        getToolSaves();
+
+    }, [0]);
+    console.log("review Array is :", reviewArray)
+
+
     const handleEditModalToggle = (tool) => {
       setSelectedTool(tool);
       if (tool) {
@@ -26,19 +57,19 @@ const Index = () => {
         setSelectedTool(null);
       }
       setEditModalVisible(!editModalVisible);
-      
+
     };
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
-  
-  
-  
+
+
+
     const handleDeleteModalToggle = () => {
       setDeleteModalVisible(!deleteModalVisible);
     };
-    
-      
+
+
 
   const data = [
     {
@@ -190,7 +221,7 @@ const Index = () => {
     })
   );
   const selectRow = (record) => {
-  
+
     if (selectedRowKeys.indexOf(record.id) >= 0) {
       selectedRowKeys.splice(selectedRowKeys.indexOf(record.id), 1);
     } else {
@@ -209,36 +240,15 @@ const Index = () => {
   const columns = [
     {
       title: (
-        <Checkbox
-          onChange={(e) => {
-            if (e.target.checked) {
-              setSelectedRowKeys(data.map((item) => item.id));
-            } else {
-              setSelectedRowKeys([]);
-            }
-          }}
-        />
+        <div className="text-[16px] text-[#777777] font-[500] fontItems">
+          #
+        </div>
       ),
-      key: "checkbox",
-      render: (_, record) => (
-        <Checkbox
-          checked={selectedRowKeys.includes(record.id)}
-          onChange={(e) => {
-            const selectedKeys = [...selectedRowKeys];
-            if (e.target.checked) {
-              selectedKeys.push(record.id);
-            } else {
-              const index = selectedKeys.indexOf(record.id);
-              if (index !== -1) {
-                selectedKeys.splice(index, 1);
-              }
-            }
-            setSelectedRowKeys(selectedKeys);
-          }}
-        />
-      ),
+      dataIndex: "id",
+      key: "id",
+      render: (text, record, index) => index + 1
     },
- 
+
     {
       title: (
         <div className="text-[16px] text-[#777777] font-[500] fontItems">
@@ -248,13 +258,26 @@ const Index = () => {
       key: "tool",
       render: (text, record) => (
         <div className="flex items-center">
-          <Image src={record.toolImg} alt="Tool Image" width={30} height={30} className="mr-2" />
+          <Image src={record.imageUrl} alt="Tool Image" width={30} height={30} className="mr-2" />
           <span>{record.tool}</span>
         </div>
       ),
     },
-    
-   
+    {
+      title: (
+        <div className="text-[16px] text-[#777777] font-[500] fontItems">
+          Name
+        </div>
+      ),
+      key: "tool",
+      render: (text, record) => (
+        <div className="flex items-center">
+          {/* <Image src={record.imageUrl} alt="Tool Image" width={30} height={30} className="mr-2" /> */}
+          <span>{record.name}</span>
+        </div>
+      ),
+    },
+
     {
         title: (
             <div className="text-[16px] text-[#777777] font-[500] fontItems">
@@ -267,21 +290,21 @@ const Index = () => {
           const trimmedText = review.length > 50 ? review.substring(0, 50) + "..." : review.review;
           return (
             <div className="flex">
-                 <Image src={review.img} alt="User Image" width={35} height={35} className="mr-2" />
+                 {/* <Image src={review.imageUrl} alt="User Image" width={35} height={35} className="mr-2" /> */}
               <div className="flex flex-col justify-center">
                 <div>
                 <span className="font-[500]">{review.user}</span>
                 <span className="text-[12px] text-[#777777] ml-2">{review.time}{","}{review.date}</span>
                 </div>
-               
+
                 <span>{trimmedText}</span>
               </div>
-             
+
             </div>
           );
         },
       },
-   
+
       {
         title: (
           <div className="text-[16px] text-[#777777] font-[500] fontItems">
@@ -292,25 +315,25 @@ const Index = () => {
         key: "rating",
         render: (text, record) => (
           <div className="flex items-center">
-            <span className="mr-2 font-[600] text-[20px]">{record.ratings.toFixed(1)}</span>
-            <StarRating rating={record.ratings} />
+            {/* <span className="mr-2 font-[600] text-[20px]">{record.ratings.toFixed(1)}</span> */}
+            <StarRating rating={record.rating} />
           </div>
         ),
       },
-      
-    {
-      title: (
-        <div className="text-[16px] text-[#777777] font-[500] fontItems">
-          Details
-        </div>
-      ),
-      key: "details",
-      render: () => (
-        <div className="flex justify-center">
-       <Button className=" py-0" icon={<EyeOutlined />} />
-        </div>
-      ),
-    },
+
+    // {
+    //   title: (
+    //     <div className="text-[16px] text-[#777777] font-[500] fontItems">
+    //       Details
+    //     </div>
+    //   ),
+    //   key: "details",
+    //   render: () => (
+    //     <div className="flex justify-center">
+    //    <Button className=" py-0" icon={<EyeOutlined />} />
+    //     </div>
+    //   ),
+    // },
     {
         title: (
           <div className="text-[16px] text-[#777777] font-[500] fontItems">
@@ -326,7 +349,7 @@ const Index = () => {
       },
   ];
 
-  
+
 
 
 
@@ -345,7 +368,7 @@ const Index = () => {
   const CardContent = ({ toolImg, toolTitle, review, ratings }) => (
     <div>
       <div className="mb-2 flex items-center">
-        
+
         <Image src={toolImg} alt="Tool Image" width={30} height={30} className="mr-2" />
         <span className="sm:text-[24px] text-[20px]">{toolTitle}</span>
       </div>
@@ -355,7 +378,7 @@ const Index = () => {
             <StarRating rating={ratings} />
           </div>
       <div className="w-full flex justify-end">
-     
+
         <Button className="py-0" icon={<EyeOutlined />} />
       </div>
     </div>
@@ -398,7 +421,7 @@ const Index = () => {
     </Dropdown>
   );
 
-  
+
 
 
   return (
@@ -408,7 +431,7 @@ const Index = () => {
       </Head>
       <div className="h-full w-full py-6 px-5 bg-[#F3F8FF] ">
         <div className="w-full h-full flex flex-col rounded-lg bg-white py-4 sm:px-5">
-        
+
         <div className="hidden sm:flex items-center justify-between my-6 mx-4">
         <div>
           <Pagination {...customPagination} total={data.length}
@@ -438,7 +461,7 @@ const Index = () => {
 
           <div className="px-4 hidden md:block">
           <Table
-  dataSource={data}
+  dataSource={reviewArray&& reviewArray}
   columns={columns}
   className='table-responsive'
   pagination={false}
@@ -456,7 +479,7 @@ const Index = () => {
           {renderCards()}
           </div>
 
-     
+
         </div>
       </div>
 

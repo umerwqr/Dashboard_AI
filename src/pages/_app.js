@@ -26,6 +26,14 @@ const App = ({ Component, pageProps }) => {
     )
       
   }
+  else if(router.pathname === "/ForgotPassword"){
+    return(
+    <GeneralLayout>
+    <Component {...pageProps}/>
+    </GeneralLayout>
+    )
+      
+  }
 
   return (
     <QueryClientProvider client={queryClient}>

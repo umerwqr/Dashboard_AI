@@ -237,19 +237,19 @@ const Index = () => {
       dataIndex: "mode",
       key: "mode",
     },
-    {
-      title: (
-        <div className="text-[16px] text-[#777777] font-[500] fontItems">
-          Details
-        </div>
-      ),
-      key: "details",
-      render: () => (
-        <div className="flex justify-center">
-          <Button className="bg-[#EFF3FF] border border-[#162D8014] py-0" icon={<EyeOutlined />} />
-        </div>
-      ),
-    },
+    // {
+    //   title: (
+    //     <div className="text-[16px] text-[#777777] font-[500] fontItems">
+    //       Details
+    //     </div>
+    //   ),
+    //   key: "details",
+    //   render: () => (
+    //     <div className="flex justify-center">
+    //       <Button className="bg-[#EFF3FF] border border-[#162D8014] py-0" icon={<EyeOutlined />} />
+    //     </div>
+    //   ),
+    // },
   ];
 
 

@@ -18,6 +18,7 @@ const SignUp = () => {
     firstName: "",
     lastName: "",
     email: "",
+    address:"",
     password: "",
     confirmPassword: ""
   });
